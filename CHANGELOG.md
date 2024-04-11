@@ -12,6 +12,66 @@ _Note: Gaps between patch versions are faulty, broken or test releases._
 
 ## UNRELEASED
 
+## 4.10.2
+
+* **Bug Fix**
+  * fix `.cjs` files not being handled ([#512](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/512) by [@Rush](https://github.com/Rush))
+
+* **Internal**
+  * Remove `is-plain-object` ([#627](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/627) by [@SukkaW](https://github.com/SukkaW))
+
+## 4.10.1
+
+* **Bug Fix**
+  * fix `this.handleValueChange.cancel()` is not a function ([#611](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/625) by [@life2015](https://github.com/life2015))
+
+## 4.10.0
+
+* **Improvement**
+  * Allows filtering the list of entrypoints ([#624](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/624) by [@chriskrogh](https://github.com/chriskrogh))
+
+* **Internal**
+  * Make module much slimmer by replacing all `lodash.*` packages ([#612](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/612)) by [@sukkaw](https://github.com/sukkaw).
+
+## 4.9.1
+
+* **Internal**
+  * Replace some lodash usages with JavaScript native API ([#505](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/505)) by [@sukkaw](https://github.com/sukkaw).
+  * Make module much slimmer ([#609](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/609)) by [@sukkaw](https://github.com/sukkaw).
+
+* **Bug Fix**
+  * fix `analyzerMode: 'server'` on certain machines ([#611](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/611) by [@panbenson](https://github.com/panbenson))
+
+## 4.9.0
+
+* **Improvement**
+  * Display modules included in concatenated entry modules on Webpack 5 when "Show content of concatenated modules" is checked ([#602](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/602) by [@pgoldberg](https://github.com/pgoldberg))
+
+## 4.8.0
+
+ * **Improvement**
+   * Support reading large (>500MB) stats.json files ([#423](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/423) by [@henry-alakazhang](https://github.com/henry-alakazhang))
+   * Improve search UX by graying out non-matches ([#554](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/554) by [@starpit](https://github.com/starpit))
+
+ * **Internal**
+   * Add Node.js v16.x to CI and update GitHub actions ([#539](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/539) by [@amareshsm](https://github.com/amareshsm))
+
+## 4.7.0
+
+ * **New Feature**
+   * Add the ability to filter to displaying only initial chunks per entrypoint ([#519](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/519) by [@pas-trop-de-zele](https://github.com/pas-trop-de-zele))
+
+## 4.6.1
+
+* **Bug Fix**
+  * fix outputting different URL in cli mode ([#524](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/524) by [@southorange1228](https://github.com/southorange1228))
+
+## 4.6.0
+
+* **New Feature** 
+  * Support outputting different URL in server mode ([#520](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/520) by [@southorange1228](https://github.com/southorange1228))
+  * Use deterministic chunk colors (#[501](https://github.com/webpack-contrib/webpack-bundle-analyzer/pull/501) by [@CreativeTechGuy](https://github.com/CreativeTechGuy))
+
 ## 4.5.0
 
  * **Improvement**

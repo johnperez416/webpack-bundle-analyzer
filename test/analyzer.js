@@ -1,7 +1,6 @@
 const chai = require('chai');
 chai.use(require('chai-subset'));
 const {expect} = chai;
-const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
@@ -107,7 +106,7 @@ describe('Analyzer', function () {
   it('should gracefully parse invalid chunks', async function () {
     generateReportFrom('with-invalid-chunk/stats.json');
     const chartData = await getChartData();
-    const invalidChunk = _.find(chartData, {label: 'invalid-chunk.js'});
+    const invalidChunk = chartData.find(i => i.label === 'invalid-chunk.js');
     expect(invalidChunk.groups).to.containSubset([
       {
         id: 1,
@@ -123,31 +122,31 @@ describe('Analyzer', function () {
   it('should gracefully process missing chunks', async function () {
     generateReportFrom('with-missing-chunk/stats.json');
     const chartData = await getChartData();
-    const invalidChunk = _.find(chartData, {label: 'invalid-chunk.js'});
+    const invalidChunk = chartData.find(i => i.label === 'invalid-chunk.js');
     expect(invalidChunk).to.exist;
     expect(invalidChunk.statSize).to.equal(24);
     forEachChartItem([invalidChunk], item => {
       expect(typeof item.statSize).to.equal('number');
       expect(item.parsedSize).to.be.undefined;
     });
-    const validChunk = _.find(chartData, {label: 'valid-chunk.js'});
+    const validChunk = chartData.find(i => i.label === 'valid-chunk.js');
     forEachChartItem([validChunk], item => {
       expect(typeof item.statSize).to.equal('number');
       expect(typeof item.parsedSize).to.equal('number');
     });
   });
 
-  it('should gracefully process missing chunks', async function () {
+  it('should gracefully process missing module chunks', async function () {
     generateReportFrom('with-missing-module-chunks/stats.json');
     const chartData = await getChartData();
-    const invalidChunk = _.find(chartData, {label: 'invalid-chunk.js'});
+    const invalidChunk = chartData.find(i => i.label === 'invalid-chunk.js');
     expect(invalidChunk).to.exist;
     expect(invalidChunk.statSize).to.equal(568);
     forEachChartItem([invalidChunk], item => {
       expect(typeof item.statSize).to.equal('number');
       expect(item.parsedSize).to.be.undefined;
     });
-    const validChunk = _.find(chartData, {label: 'valid-chunk.js'});
+    const validChunk = chartData.find(i => i.label === 'valid-chunk.js');
     forEachChartItem([validChunk], item => {
       expect(typeof item.statSize).to.equal('number');
       expect(typeof item.parsedSize).to.equal('number');
@@ -157,6 +156,11 @@ describe('Analyzer', function () {
   it('should support stats files with js modules chunk', async function () {
     generateReportFrom('with-modules-chunk.json');
     await expectValidReport({bundleLabel: 'bundle.mjs'});
+  });
+
+  it('should support stats files with cjs chunk', async function () {
+    generateReportFrom('with-cjs-chunk.json');
+    await expectValidReport({bundleLabel: 'bundle.cjs'});
   });
 
   it('should properly parse extremely optimized bundle from webpack 5', async function () {
@@ -183,6 +187,14 @@ describe('Analyzer', function () {
     );
   });
 
+  it('should properly parse webpack 5 bundle with an entry module that is a concatenated module', async function () {
+    generateReportFrom('webpack-5-bundle-with-concatenated-entry-module/stats.json');
+    const chartData = await getChartData();
+    expect(chartData).to.containSubset(
+      require('./stats/webpack-5-bundle-with-concatenated-entry-module/expected-chart-data')
+    );
+  });
+
   it('should support generating JSON output for the report', async function () {
     generateJSONReportFrom('with-modules-in-chunks/stats.json');
 
@@ -193,6 +205,20 @@ describe('Analyzer', function () {
   it('should support stats files with non-asset asset', async function () {
     generateReportFrom('with-non-asset-asset/stats.json');
     await expectValidReport({bundleLabel: 'bundle.js'});
+  });
+
+  it('should map chunks correctly to entrypoints', async function () {
+    generateReportFrom('with-multiple-entrypoints/stats.json');
+    const chartData = await getChartData();
+    expect(chartData).to.containSubset(
+      require('./stats/with-multiple-entrypoints/expected-chart-data')
+    );
+  });
+
+  it('should return empty chartData if there are no entrypoints', async function () {
+    generateReportFrom('with-no-entrypoints/stats.json');
+    const chartData = await getChartData();
+    expect(chartData).to.be.empty;
   });
 
   describe('options', function () {
